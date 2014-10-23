@@ -1,8 +1,3 @@
-# Blockly
+# blockly-bq
 
-Google's Blockly is a web-based, graphical programming editor.  Users can drag
-blocks together to build a programs.  All code is free and open source.
-
-**The project page is https://developers.google.com/blockly/**
-
-![](https://developers.google.com/blockly/sample.png)
+This project is a fork of the blockly visual programming library for bitbloq. It's not simply a directive that encapsulates the blockly library, but a modified version of the library to provide better integration with roboblocks.
