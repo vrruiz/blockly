@@ -151,40 +151,47 @@ Blockly.Toolbox.position_ = function() {
  * @private
  */
 Blockly.Toolbox.populate_ = function() {
-  var rootOut = Blockly.Toolbox.tree_;
-  rootOut.removeChildren();  // Delete any existing content.
-  rootOut.blocks = [];
-  function syncTrees(treeIn, treeOut) {
-    for (var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
-      if (!childIn.tagName) {
-        // Skip over text.
-        continue;
-      }
-      var name = childIn.tagName.toUpperCase();
-      if (name == 'CATEGORY') {
-        var childOut = rootOut.createNode(childIn.getAttribute('name'));
-        childOut.blocks = [];
-        treeOut.add(childOut);
-        var custom = childIn.getAttribute('custom');
-        if (custom) {
-          // Variables and procedures have special categories that are dynamic.
-          childOut.blocks = custom;
-        } else {
-          syncTrees(childIn, childOut);
+    var rootOut = Blockly.Toolbox.tree_;
+    rootOut.removeChildren(); // Delete any existing content.
+    rootOut.blocks = [];
+
+    function syncTrees(treeIn, treeOut) {
+        for (var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
+            if (!childIn.tagName) {
+                // Skip over text.
+                continue;
+            }
+            var name = childIn.tagName.toUpperCase();
+            if (name == 'CATEGORY') {
+                var childOut = rootOut.createNode(childIn.getAttribute('name'));
+                childOut.blocks = [];
+                treeOut.add(childOut);
+
+                var categoryName = childIn.getAttribute('name').toLowerCase().replace(' ', '');
+                var categoryId = childIn.getAttribute('id').toLowerCase().replace(' ', '');
+                childOut.setId(categoryId);
+                childOut.setIconClass('category__icon category--' + categoryId);
+
+                var custom = childIn.getAttribute('custom');
+                if (custom) {
+                    // Variables and procedures have special categories that are dynamic.
+                    childOut.blocks = custom;
+                } else {
+                    syncTrees(childIn, childOut);
+                }
+            } else if (name == 'BLOCK') {
+                treeOut.blocks.push(childIn);
+            }
         }
-      } else if (name == 'BLOCK') {
-        treeOut.blocks.push(childIn);
-      }
     }
-  }
-  syncTrees(Blockly.languageTree, Blockly.Toolbox.tree_);
+    syncTrees(Blockly.languageTree, Blockly.Toolbox.tree_);
 
-  if (rootOut.blocks.length) {
-    throw 'Toolbox cannot have both blocks and categories in the root level.';
-  }
+    if (rootOut.blocks.length) {
+        throw 'Toolbox cannot have both blocks and categories in the root level.';
+    }
 
-  // Fire a resize event since the toolbox may have changed width and height.
-  Blockly.fireUiEvent(window, 'resize');
+    // Fire a resize event since the toolbox may have changed width and height.
+    Blockly.fireUiEvent(window, 'resize');
 };
 
 /**

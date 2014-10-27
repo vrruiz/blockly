@@ -1168,31 +1168,35 @@ Blockly.Block.prototype.setHelpUrl = function(url) {
  * @return {number} HSV hue value.
  */
 Blockly.Block.prototype.getColour = function() {
-  return this.colourHue_;
+    return this.colourHex_;
 };
 
 /**
  * Change the colour of a block.
- * @param {number} colourHue HSV hue value.
+ * @param {number} colourHex color hex value.
  */
-Blockly.Block.prototype.setColour = function(colourHue) {
-  this.colourHue_ = colourHue;
-  if (this.svg_) {
-    this.svg_.updateColour();
-  }
-  var icons = this.getIcons();
-  for (var x = 0; x < icons.length; x++) {
-    icons[x].updateColour();
-  }
-  if (this.rendered) {
-    // Bump every dropdown to change its colour.
-    for (var x = 0, input; input = this.inputList[x]; x++) {
-      for (var y = 0, field; field = input.fieldRow[y]; y++) {
-        field.setText(null);
-      }
+Blockly.Block.prototype.setColour = function(colourHex) {
+    //If clourHex is a number, we need to change to default hex color
+    if (colourHex instanceof Number) {
+        colourHex = '#DDD';
     }
-    this.render();
-  }
+    this.colourHex_ = colourHex;
+    if (this.svg_) {
+        this.svg_.updateColour();
+    }
+    var icons = this.getIcons();
+    for (var x = 0; x < icons.length; x++) {
+        icons[x].updateColour();
+    }
+    if (this.rendered) {
+        // Bump every dropdown to change its colour.
+        for (var x = 0, input; input = this.inputList[x]; x++) {
+            for (var y = 0, field; field = input.fieldRow[y]; y++) {
+                field.setText(null);
+            }
+        }
+        this.render();
+    }
 };
 
 /**

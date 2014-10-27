@@ -1,3 +1,14 @@
+tmp
+target
+node_modules
+bower_components
+
 .DS_Store
 *.pyc
+
+
+# Editor File Ignore
+*.sublime-project
+*.sublime-workspace
+.idea/
 *.komodoproject
