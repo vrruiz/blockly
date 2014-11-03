@@ -3,7 +3,7 @@
     "description": "Blockly fork used in bitbloq",
     "version": "0.1.1",
     "license": "Apache 2.0 License",
-    "keywords": "[blockly arduino bitbloq bq]",
+    "keywords": ["blockly", "arduino", "bitbloq", "bq"],
     "author": {
         "name": "bq"
     },
