@@ -125,6 +125,11 @@ Blockly.Arduino.finish = function(code) {
   allDefs=allDefs.replace(/&amp;/g,'');
   allDefs=allDefs.replace(/amp;/g,'');
 
+  allDefs=allDefs.replace(/&lt;/g,'<');
+  allDefs=allDefs.replace(/lt;/g,'<');
+  allDefs=allDefs.replace(/&gt;/g,'>');
+  allDefs=allDefs.replace(/gt;/g,'>');
+
   return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
 };
 
