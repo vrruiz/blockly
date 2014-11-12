@@ -120,17 +120,19 @@ Blockly.Arduino.finish = function(code) {
   var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\nvoid setup() \n{\n  '+setups.join('\n  ') + '\n}'+ '\n\n';
 
 
-  allDefs=allDefs.replace(/&quot;/g,'"');
-  allDefs=allDefs.replace(/quot;/g,'"');
-  allDefs=allDefs.replace(/&amp;/g,'');
-  allDefs=allDefs.replace(/amp;/g,'');
+  var allCode=allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
 
-  allDefs=allDefs.replace(/&lt;/g,'<');
-  allDefs=allDefs.replace(/lt;/g,'<');
-  allDefs=allDefs.replace(/&gt;/g,'>');
-  allDefs=allDefs.replace(/gt;/g,'>');
+  allCode=allCode.replace(/&quot;/g,'"');
+  allCode=allCode.replace(/quot;/g,'"');
+  allCode=allCode.replace(/&amp;/g,'');
+  allCode=allCode.replace(/amp;/g,'');
 
-  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
+  allCode=allCode.replace(/&lt;/g,'<');
+  allCode=allCode.replace(/lt;/g,'<');
+  allCode=allCode.replace(/&gt;/g,'>');
+  allCode=allCode.replace(/gt;/g,'>');
+
+  return allCode;
 };
 
 /**
