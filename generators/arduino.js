@@ -2,6 +2,26 @@
 LICENSE ...
 */
 
+
+// Context menus.
+Blockly.Msg.DUPLICATE_BLOCK = 'Duplicate';
+Blockly.Msg.REMOVE_COMMENT = 'Remove Comment';
+Blockly.Msg.ADD_COMMENT = 'Add Comment';
+Blockly.Msg.EXTERNAL_INPUTS = 'External Inputs';
+Blockly.Msg.INLINE_INPUTS = 'Inline Inputs';
+Blockly.Msg.DELETE_BLOCK = 'Delete Block';
+Blockly.Msg.DELETE_X_BLOCKS = 'Delete %1 Blocks';
+Blockly.Msg.COLLAPSE_BLOCK = 'Collapse Block';
+Blockly.Msg.EXPAND_BLOCK = 'Expand Block';
+Blockly.Msg.DISABLE_BLOCK = 'Disable Block';
+Blockly.Msg.ENABLE_BLOCK = 'Enable Block';
+Blockly.Msg.HELP = 'Help';
+
+Blockly.Msg.COLLAPSE_ALL = "Collapse Blocks";
+Blockly.Msg.EXPAND_ALL = "Expand Blocks";
+
+
+
 Blockly.Arduino=new Blockly.Generator("Arduino");
 /**
  * List of illegal variable names.
