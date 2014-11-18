@@ -1,12 +1,16 @@
 {
     "name": "blockly-bq",
     "description": "Blockly fork used in bitbloq",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "license": "Apache 2.0 License",
     "keywords": ["blockly", "arduino", "bitbloq", "bq"],
-    "author": {
-        "name": "bq"
-    },
+    "contributors": [{
+        "name": "Sergio Morcuende",
+        "email": "sergio.morcuende@bq.com"
+    }, {
+        "name": "Irene Sanz",
+        "email": "irene.sanz@bq.com"
+    }],
     "homepage": "http://github.com/bq/blockly",
     "repository": {
         "type": "git",
