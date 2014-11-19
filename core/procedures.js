@@ -145,21 +145,24 @@ Blockly.Procedures.isLegalName = function(name, workspace, opt_exclude) {
  * @this {!Blockly.FieldVariable}
  */
 Blockly.Procedures.rename = function(text) {
-  // Strip leading and trailing whitespace.  Beyond this, all names are legal.
-  text = text.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
-
-  // Ensure two identically-named procedures don't exist.
-  text = Blockly.Procedures.findLegalName(text, this.sourceBlock_);
-  // Rename any callers.
-  var blocks = this.sourceBlock_.workspace.getAllBlocks();
-  for (var x = 0; x < blocks.length; x++) {
-    var func = blocks[x].renameProcedure;
-    if (func) {
-      func.call(blocks[x], this.text_, text);
+    // Strip leading and trailing whitespace.  Beyond this, all names are legal.
+    text = text.replace(/^[\s\xa0]+|[\s\xa0]+$/g, '');
+    // Ensure two identically-named procedures don't exist.
+    if (text !== '') {
+        text = Blockly.Procedures.findLegalName(text, this.sourceBlock_);
+        // Rename any callers.
+        var blocks = this.sourceBlock_.workspace.getAllBlocks();
+        for (var x = 0; x < blocks.length; x++) {
+            var func = blocks[x].renameProcedure;
+            if (func) {
+                func.call(blocks[x], this.text_, text);
+            }
+        }
     }
-  }
-  return text;
+    return text;
 };
+
+
 
 /**
  * Construct the blocks required by the flyout for the procedure category.
