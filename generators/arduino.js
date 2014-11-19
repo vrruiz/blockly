@@ -163,8 +163,8 @@ Blockly.Arduino.finish = function(code) {
 
     allCode = allCode.replace(/&quot;/g, '"');
     allCode = allCode.replace(/quot;/g, '"');
-    allCode = allCode.replace(/&amp;/g, '&');
-    allCode = allCode.replace(/amp;/g, '&');
+    allCode = allCode.replace(/&amp;/g, "&");
+    allCode = allCode.replace(/amp;/g, "");
 
     allCode = allCode.replace(/&lt;/g, '<');
     allCode = allCode.replace(/lt;/g, '<');
