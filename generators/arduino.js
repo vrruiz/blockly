@@ -1,8 +1,6 @@
 /*
 LICENSE ...
 */
-
-
 // Context menus.
 Blockly.Msg.DUPLICATE_BLOCK = 'Duplicate';
 Blockly.Msg.REMOVE_COMMENT = 'Remove Comment';
@@ -16,12 +14,8 @@ Blockly.Msg.EXPAND_BLOCK = 'Expand Block';
 Blockly.Msg.DISABLE_BLOCK = 'Disable Block';
 Blockly.Msg.ENABLE_BLOCK = 'Enable Block';
 Blockly.Msg.HELP = 'Help';
-
 Blockly.Msg.COLLAPSE_ALL = "Collapse Blocks";
 Blockly.Msg.EXPAND_ALL = "Expand Blocks";
-
-
-
 Blockly.Arduino = new Blockly.Generator("Arduino");
 /**
  * List of illegal variable names.
@@ -33,11 +27,9 @@ Blockly.Arduino = new Blockly.Generator("Arduino");
 if (!Blockly.Arduino.RESERVED_WORDS_) {
     Blockly.Arduino.RESERVED_WORDS_ = '';
 }
-
 Blockly.Arduino.RESERVED_WORDS_ +=
 // http://arduino.cc/en/Reference/HomePage
 'setup,loop,if,else,for,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts';
-
 /**
  * Order of operation ENUMs.
  *
@@ -58,55 +50,52 @@ Blockly.Arduino.ORDER_LOGICAL_OR = 12; // ||
 Blockly.Arduino.ORDER_CONDITIONAL = 13; // expr ? expr : expr
 Blockly.Arduino.ORDER_ASSIGNMENT = 14; // = *= /= ~/= %= += -= <<= >>= &= ^= |=
 Blockly.Arduino.ORDER_NONE = 99; // (...)
-
 /*
  * Arduino Board profiles
  *
  */
 var profile = {
-        arduino: {
-            description: "Arduino standard-compatible board",
-            digital: [
-                ["1", "1"],
-                ["2", "2"],
-                ["3", "3"],
-                ["4", "4"],
-                ["5", "5"],
-                ["6", "6"],
-                ["7", "7"],
-                ["8", "8"],
-                ["9", "9"],
-                ["10", "10"],
-                ["11", "11"],
-                ["12", "12"],
-                ["13", "13"],
-                ["A0", "A0"],
-                ["A1", "A1"],
-                ["A2", "A2"],
-                ["A3", "A3"],
-                ["A4", "A4"],
-                ["A5", "A5"]
-            ],
-            analog: [
-                ["A0", "A0"],
-                ["A1", "A1"],
-                ["A2", "A2"],
-                ["A3", "A3"],
-                ["A4", "A4"],
-                ["A5", "A5"]
-            ],
-            serial: 9600
-        },
-        arduino_mega: {
-            description: "Arduino Mega-compatible board"
-            //53 digital
-            //15 analog
-        }
+    arduino: {
+        description: "Arduino standard-compatible board",
+        digital: [
+            ["1", "1"],
+            ["2", "2"],
+            ["3", "3"],
+            ["4", "4"],
+            ["5", "5"],
+            ["6", "6"],
+            ["7", "7"],
+            ["8", "8"],
+            ["9", "9"],
+            ["10", "10"],
+            ["11", "11"],
+            ["12", "12"],
+            ["13", "13"],
+            ["A0", "A0"],
+            ["A1", "A1"],
+            ["A2", "A2"],
+            ["A3", "A3"],
+            ["A4", "A4"],
+            ["A5", "A5"]
+        ],
+        analog: [
+            ["A0", "A0"],
+            ["A1", "A1"],
+            ["A2", "A2"],
+            ["A3", "A3"],
+            ["A4", "A4"],
+            ["A5", "A5"]
+        ],
+        serial: 9600
+    },
+    arduino_mega: {
+        description: "Arduino Mega-compatible board"
+        //53 digital
+        //15 analog
     }
-    //set default profile to arduino standard-compatible board
+}
+//set default profile to arduino standard-compatible board
 profile["default"] = profile["arduino"];
-
-
 /**
  * Initialise the database of variable names.
  */
@@ -115,18 +104,14 @@ Blockly.Arduino.init = function() {
     Blockly.Arduino.definitions_ = {};
     // Create a dictionary of setups to be printed before the code.
     Blockly.Arduino.setups_ = {};
-
     if (Blockly.Variables) {
         if (!Blockly.Arduino.variableDB_) {
-            Blockly.Arduino.variableDB_ =
-                new Blockly.Names(Blockly.Arduino.RESERVED_WORDS_);
+            Blockly.Arduino.variableDB_ = new Blockly.Names(Blockly.Arduino.RESERVED_WORDS_);
         } else {
             Blockly.Arduino.variableDB_.reset();
         }
     }
 };
-
-
 /**
  * Prepend the generated code with the variable definitions.
  * @param {string} code Generated code.
@@ -137,7 +122,6 @@ Blockly.Arduino.finish = function(code) {
     code = '  ' + code.replace(/\n/g, '\n  ');
     code = code.replace(/\n\s+$/, '\n');
     code = 'void loop() \n{\n' + code + '\n}';
-
     // Convert the definitions dictionary into a list.
     var imports = [];
     var definitions = [];
@@ -149,31 +133,24 @@ Blockly.Arduino.finish = function(code) {
             definitions.push(def);
         }
     }
-
     // Convert the setups dictionary into a list.
     var setups = [];
     for (var name in Blockly.Arduino.setups_) {
         setups.push(Blockly.Arduino.setups_[name]);
     }
-
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
-
-
     var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
-
     allCode = allCode.replace(/&quot;/g, '"');
+    allCode = allCode.replace(/&amp;quot;/g, '"');
     allCode = allCode.replace(/quot;/g, '"');
     allCode = allCode.replace(/&amp;/g, "&");
     allCode = allCode.replace(/amp;/g, "");
-
     allCode = allCode.replace(/&lt;/g, '<');
     allCode = allCode.replace(/lt;/g, '<');
     allCode = allCode.replace(/&gt;/g, '>');
     allCode = allCode.replace(/gt;/g, '>');
-
     return allCode;
 };
-
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
  * anything.  A trailing semicolon is needed to make this legal.
@@ -183,7 +160,6 @@ Blockly.Arduino.finish = function(code) {
 Blockly.Arduino.scrubNakedValue = function(line) {
     return line + ';\n';
 };
-
 /**
  * Encode a string as a properly escaped Arduino string, complete with quotes.
  * @param {string} string Text to encode.
@@ -192,13 +168,9 @@ Blockly.Arduino.scrubNakedValue = function(line) {
  */
 Blockly.Arduino.quote_ = function(string) {
     // TODO: This is a quick hack.  Replace with goog.string.quote
-    string = string.replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\\n')
-        .replace(/\$/g, '\\$')
-        .replace(/'/g, '\\\'');
+    string = string.replace(/\\/g, '\\\\').replace(/\n/g, '\\\n').replace(/\$/g, '\\$').replace(/'/g, '\\\'');
     return '\"' + string + '\"';
 };
-
 /**
  * Common tasks for generating Arduino from blocks.
  * Handles comments for the specified block and any connected value blocks.
@@ -228,7 +200,7 @@ Blockly.Arduino.scrub_ = function(block, code) {
             if (block.inputList[x].type == Blockly.INPUT_VALUE) {
                 var childBlock = block.inputList[x].connection.targetBlock();
                 if (childBlock) {
-                    //          var comment = Blockly.Generator.allNestedComments(childBlock);
+                    var comment = Blockly.Generator.allNestedComments(childBlock);
                     if (comment) {
                         commentCode += Blockly.Generator.prefixLines(comment, '// ');
                     }
@@ -239,4 +211,29 @@ Blockly.Arduino.scrub_ = function(block, code) {
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = this.blockToCode(nextBlock);
     return commentCode + code + nextCode;
+};
+
+
+Blockly.Generator.prefixLines = function(text, prefix) {
+    return prefix + text.replace(/\n(.)/g, '\n' + prefix + '$1');
+};
+/**
+ * Recursively spider a tree of blocks, returning all their comments.
+ * @param {!Blockly.Block} block The block from which to start spidering.
+ * @return {string} Concatenated list of comments.
+ */
+Blockly.Generator.allNestedComments = function(block) {
+    var comments = [];
+    var blocks = block.getDescendants();
+    for (var x = 0; x < blocks.length; x++) {
+        var comment = blocks[x].getCommentText();
+        if (comment) {
+            comments.push(comment);
+        }
+    }
+    // Append an empty string to create a trailing line break when joined.
+    if (comments.length) {
+        comments.push('');
+    }
+    return comments.join('\n');
 };
