@@ -150,8 +150,8 @@ class Gen_compressed(threading.Thread):
     self.gen_core()
     self.gen_blocks()
     self.gen_generator('javascript')
-    self.gen_generator('python')
-    self.gen_generator('dart')
+    #self.gen_generator('python')
+    #self.gen_generator('dart')
     self.gen_generator('arduino')
 
   def gen_core(self):
