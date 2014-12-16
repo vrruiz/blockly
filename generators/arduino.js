@@ -139,7 +139,7 @@ Blockly.Arduino.finish = function(code) {
     for (var name in Blockly.Arduino.setups_) {
         setups.push(Blockly.Arduino.setups_[name]);
     }
-    var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
+    var allDefs = imports.join('\n') + '\n\n' + definitions+ '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
     var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
     allCode = allCode.replace(/&quot;/g, '"');
     allCode = allCode.replace(/&amp;quot;/g, '"');
@@ -161,23 +161,27 @@ Blockly.Arduino.orderFunctionDefinitions = function(definitions) {
     var func_names = [];
     var final_order = [];
     for (var i in definitions) {
-        var name = definitions[i].substring(definitions[i].indexOf(' '), definitions[i].indexOf('('));
-        name = name.replace(/ /g, '');
-        func_names.push(name);
+        var name = definitions[i].substring(0, definitions[i].indexOf(')')+1);
+        name+=';\n';
+        func_names+=(name);
     }
-    for (var j in definitions) {
-        for (var i in func_names) {
-            var func = func_names[i];
-            var position = Blockly.Arduino.findAll(definitions[j], func_names[i]);
-            for (var pos in position) {
-                if (position[pos] >= 0 && definitions[j][position[pos] + 1] === '(') {
-                    final_order.push(definitions[i]);
-                    delete definitions[i];
-                }
-            }
-        }
-        final_order.push(definitions[j]);
-    }
+    // for (var j in definitions) {
+    //     for (var i in func_names) {
+    //         var func = func_names[i];
+    //         var position = Blockly.Arduino.findAll(definitions[j], func_names[i]);
+    //         for (var pos in position) {
+    //             if (position[pos] >= 0 && definitions[j][position[pos] + 1] === '(') {
+    //                 final_order.push(definitions[i]);
+    //                 delete definitions[i];
+    //             }
+    //         }
+    //     }
+    //     final_order.push(definitions[j]);
+    // }
+    final_order+=func_names;
+    
+    final_order+=definitions.join('');
+
     return final_order;
 };
 
