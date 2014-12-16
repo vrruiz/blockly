@@ -1,25 +1,33 @@
 {
-    "name": "blockly-bq",
-    "description": "Blockly fork used in bitbloq",
-    "version": "0.1.6",
-    "license": "Apache 2.0 License",
-    "keywords": ["blockly", "arduino", "bitbloq", "bq"],
-    "contributors": [{
-        "name": "Sergio Morcuende",
-        "email": "sergio.morcuende@bq.com"
-    }, {
-        "name": "Irene Sanz",
-        "email": "irene.sanz@bq.com"
-    }],
-    "homepage": "http://github.com/bq/blockly",
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/bq/blockly.git"
+  "name": "blockly-bq",
+  "description": "Blockly fork used in bitbloq",
+  "version": "0.1.7",
+  "license": "Apache 2.0 License",
+  "keywords": [
+    "blockly",
+    "arduino",
+    "bitbloq",
+    "bq"
+  ],
+  "contributors": [
+    {
+      "name": "Sergio Morcuende",
+      "email": "sergio.morcuende@bq.com"
     },
-    "main": "blockly_compressed.js",
-    "ignore": [
-        "bower.json",
-        "README.md",
-        ".gitignore"
-    ]
+    {
+      "name": "Irene Sanz",
+      "email": "irene.sanz@bq.com"
+    }
+  ],
+  "homepage": "http://github.com/bq/blockly",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bq/blockly.git"
+  },
+  "main": "blockly_compressed.js",
+  "ignore": [
+    "bower.json",
+    "README.md",
+    ".gitignore"
+  ]
 }
