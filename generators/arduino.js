@@ -124,23 +124,24 @@ Blockly.Arduino.finish = function(code) {
     code = 'void loop() \n{\n' + code + '\n}';
     // Convert the definitions dictionary into a list.
     var imports = [];
+    var initial_definitions = [];
     var definitions = [];
     for (var name in Blockly.Arduino.definitions_) {
         var def = Blockly.Arduino.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
         } else {
-            definitions.push(def);
+            initial_definitions.push(def);
         }
     }
-    definitions = Blockly.Arduino.orderFunctionDefinitions(definitions);
+    definitions = Blockly.Arduino.orderDefinitions(initial_definitions);
     // Convert the setups dictionary into a list.
     var setups = [];
     for (var name in Blockly.Arduino.setups_) {
         setups.push(Blockly.Arduino.setups_[name]);
     }
-    var allDefs = imports.join('\n') + '\n\n' + definitions+ '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
-    var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
+    var allDefs = imports.join('\n') + '\n\n/***   Global variables   ***/\n' + definitions[0] + '\n\n/***   Function declaration   ***/\n' + definitions[1] + '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
+    var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n/***   Function definition   ***/\n' + definitions[2];
     allCode = allCode.replace(/&quot;/g, '"');
     allCode = allCode.replace(/&amp;quot;/g, '"');
     allCode = allCode.replace(/quot;/g, '"');
@@ -152,52 +153,31 @@ Blockly.Arduino.finish = function(code) {
     allCode = allCode.replace(/gt;/g, '>');
     return allCode;
 };
-
-
 /**
-*Function that orders the function definitions if any function is declared within another one
-*/
-Blockly.Arduino.orderFunctionDefinitions = function(definitions) {
+ *Function that orders the function definitions if any function is declared within another one
+ */
+Blockly.Arduino.orderDefinitions = function(definitions) {
     var func_names = [];
-    var final_order = [];
+    var var_declarations = [];
+    var func_definitions = [];
     for (var i in definitions) {
-        var name = definitions[i].substring(0, definitions[i].indexOf(')')+1);
-        name+=';\n';
-        func_names+=(name);
-    }
-    // for (var j in definitions) {
-    //     for (var i in func_names) {
-    //         var func = func_names[i];
-    //         var position = Blockly.Arduino.findAll(definitions[j], func_names[i]);
-    //         for (var pos in position) {
-    //             if (position[pos] >= 0 && definitions[j][position[pos] + 1] === '(') {
-    //                 final_order.push(definitions[i]);
-    //                 delete definitions[i];
-    //             }
-    //         }
-    //     }
-    //     final_order.push(definitions[j]);
-    // }
-    final_order+=func_names;
-    
-    final_order+=definitions.join('');
-
-    return final_order;
-};
-
-/**
-*Function that returns the indexes of all the matches of the second string in the first string
-*/
-Blockly.Arduino.findAll = function(source, find) {
-    var result = [];
-    for (var i = 0; i < source.length; ++i) {
-        // If you want to search case insensitive use 
-        // if (source.substring(i, i + find.length).toLowerCase() == find) {
-        if (source.substring(i, i + find.length) == find) {
-            result.push(i);
+        if (definitions[i].search('\\)') < 0) { //variable declaration
+            var_declarations += definitions[i];
+        } else { //function definition
+            var functions = definitions[i].split('}');
+            for (var j in functions) {
+                functions[j] += '\n}\n';
+                var name = functions[j].substring(0, functions[j].search('\\)') + 1);
+                name.replace('\n', '');
+                if (name !== '') {
+                    name += ';\n';
+                    func_names += (name);
+                    func_definitions += functions[j];
+                }
+            }
         }
     }
-    return result;
+    return [var_declarations, func_names, func_definitions];
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
