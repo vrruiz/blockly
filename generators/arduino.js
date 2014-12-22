@@ -126,11 +126,16 @@ Blockly.Arduino.finish = function(code) {
     var imports = [];
     var initial_definitions = [];
     var definitions = [];
+    var variables=[];
     for (var name in Blockly.Arduino.definitions_) {
         var def = Blockly.Arduino.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
-        } else {
+        } 
+        else if (name.search('declare_var')>=0){
+            variables.push(def);
+        }
+        else {
             initial_definitions.push(def);
         }
     }
@@ -140,8 +145,8 @@ Blockly.Arduino.finish = function(code) {
     for (var name in Blockly.Arduino.setups_) {
         setups.push(Blockly.Arduino.setups_[name]);
     }
-    var allDefs = imports.join('\n') + '\n\n/***   Global variables   ***/\n' + definitions[0] + '\n\n/***   Function declaration   ***/\n' + definitions[1] + '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
-    var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n/***   Function definition   ***/\n' + definitions[2];
+    var allDefs = imports.join('\n') + '\n\n/***   Global variables   ***/\n' + variables.join('') + '\n\n/***   Function declaration   ***/\n' + definitions[0] + '\nvoid setup() \n{\n  ' + setups.join('\n  ') + '\n}' + '\n\n';
+    var allCode = allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n/***   Function definition   ***/\n' + definitions[1];
     allCode = allCode.replace(/&quot;/g, '"');
     allCode = allCode.replace(/&amp;quot;/g, '"');
     allCode = allCode.replace(/quot;/g, '"');
@@ -161,23 +166,15 @@ Blockly.Arduino.orderDefinitions = function(definitions) {
     var var_declarations = [];
     var func_definitions = [];
     for (var i in definitions) {
-        if (definitions[i].search('\\)') < 0) { //variable declaration
-            var_declarations += definitions[i];
-        } else { //function definition
-            var functions = definitions[i].split('}');
-            for (var j in functions) {
-                functions[j] += '\n}\n';
-                var name = functions[j].substring(0, functions[j].search('\\)') + 1);
-                name.replace('\n', '');
-                if (name !== '') {
-                    name += ';\n';
-                    func_names += (name);
-                    func_definitions += functions[j];
-                }
-            }
+        var name = definitions[i].substring(0, definitions[i].search('\\)') + 1);
+        name.replace('\n', '');
+        if (name !== '') {
+            name += ';\n';
+            func_names += (name);
+            func_definitions += definitions[i];
         }
     }
-    return [var_declarations, func_names, func_definitions];
+    return [ func_names, func_definitions];
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
