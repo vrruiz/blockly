@@ -177,8 +177,9 @@ Blockly.Scrollbar = function(workspace, horizontal, opt_pair) {
  * Width of vertical scrollbar or height of horizontal scrollbar.
  * Increase the size of scrollbars on touch devices.
  */
-Blockly.Scrollbar.scrollbarThickness =
-    ('ontouchstart' in document.documentElement) ? 25 : 15;
+Blockly.Scrollbar.scrollbarThickness = 15;
+// FIXME: Problem with QtWebKit and 'ontouchstart'
+// ('ontouchstart' in document.documentElement) ? 25 : 15;
 
 /**
  * Dispose of this scrollbar.
