@@ -215,7 +215,8 @@ Blockly.Xml.domToWorkspace = function(workspace, xml) {
   if (Blockly.RTL) {
     var width = workspace.getMetrics().viewWidth;
   }
-  for (var x = 0, xmlChild; xmlChild = xml.childNodes[x]; x++) {
+  for (var x = 0; x < xml.childNodes.length; x++) {
+    var xmlChild = xml.childNodes[x];
     if (xmlChild.nodeName.toLowerCase() == 'block') {
       var block = Blockly.Xml.domToBlock(workspace, xmlChild);
       var blockX = parseInt(xmlChild.getAttribute('x'), 10);
